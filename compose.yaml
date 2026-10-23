@@ -1,0 +1,13 @@
+# For "make"-less systems (e.g. Windows): docker compose run --rm java mvn test
+services:
+  java:
+    image: maven:3.10-eclipse-temurin-27
+    working_dir: /app
+    environment:
+      MAVEN_CONFIG: /app/.m2
+      MAVEN_OPTS: -Dmaven.repo.local=/app/.m2/repository -Duser.home=/tmp
+    # Run as the host user so that target/ and .m2/ are not owned by root.
+    # On Linux, export UID and GID first if your user is not 1000:1000.
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/app

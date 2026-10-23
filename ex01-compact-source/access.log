@@ -1,0 +1,24 @@
+2026-10-21T08:00:01Z GET /api/orders 200 112ms
+2026-10-21T08:00:02Z GET /api/orders/4711 200 87ms
+2026-10-21T08:00:02Z GET /api/orders/4712 200 93ms
+2026-10-21T08:00:03Z POST /api/orders 201 340ms
+2026-10-21T08:00:05Z GET /api/reports/2026/pdf 200 2210ms
+2026-10-21T08:00:06Z GET /health 200 2ms
+2026-10-21T08:00:07Z GET /api/products?page=2 200 158ms
+2026-10-21T08:00:07Z GET /api/products?page=3 200 162ms
+2026-10-21T08:00:08Z DELETE /api/orders/4711 204 75ms
+2026-10-21T08:00:09Z GET /api/reports/2025/pdf 200 1830ms
+connection reset by peer
+2026-10-21T08:00:11Z GET /api/orders/4713 404 12ms
+2026-10-21T08:00:12Z POST /api/orders 201 410ms
+2026-10-21T08:00:13Z GET /api/products 200 140ms
+2026-10-21T08:00:13Z GET /api/customers/17/orders 200 530ms
+2026-10-21T08:00:14Z GET /health 200 3ms
+2026-10-21T08:00:15Z GET /api/customers/42/orders 200 610ms
+2026-10-21T08:00:16Z GET /api/orders 200 fast
+2026-10-21T08:00:17Z POST /api/orders 500 1290ms
+2026-10-21T08:00:18Z GET /api/reports/2024/pdf 200 1960ms
+2026-10-21T08:00:19Z GET /api/customers/42/orders 200 580ms
+2026-10-21T08:00:20Z GET /api/orders/4714 200 101ms
+
+2026-10-21T08:00:21Z GET /health 200 1ms
