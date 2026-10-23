@@ -106,7 +106,7 @@ class SlowestEndpointsTest {
         assertThat(LOG_LINE).as("LogLine.java next to SlowestEndpoints.java").exists();
         assertThat(Source.ofFile(LOG_LINE).contains("\\brecord\\s+LogLine\\b")).as("a record LogLine").isTrue();
         assertThat(Source.ofFile(LOG_LINE).contains("Optional<LogLine>\\s+parse\\s*\\(")).as("Optional<LogLine> parse(...)").isTrue();
-        assertThat(Source.ofFile(SCRIPT).contains("\\bLogLine\\.parse\\b")).as("the script uses LogLine.parse").isTrue();
+        assertThat(Source.ofFile(SCRIPT).contains("LogLine(\\.|::)parse\\b")).as("the script uses LogLine.parse").isTrue();
     }
 
     private record Result(int exitCode, String stdout, String stderr) {

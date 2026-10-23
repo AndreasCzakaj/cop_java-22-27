@@ -65,8 +65,12 @@
 /// - The source launcher finds `LogLine.java` because it is in the same
 ///   directory. No `javac`, no classpath.
 /// - Row format: `"%2d. %-6s %-28s %6d ms %4d requests".formatted(...)`
-/// - Want to go further? Look up "shebang" in JEP 330 and turn the script into
-///   an executable file without the `.java` extension. (Not tested.)
+///
+/// ## To discuss
+/// - A file without the `.java` extension that starts with
+///   `#!/usr/bin/env -S java --source 27` can be run like any shell script.
+///   But in this "shebang" mode the launcher compiles only that one file.
+///   What would that mean for `LogLine.java`?
 ///
 /// ## Verify
 /// `make test ex=01`

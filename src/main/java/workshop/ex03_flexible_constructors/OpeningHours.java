@@ -27,6 +27,11 @@ import java.time.LocalTime;
 /// - Call `split` only once.
 /// - Delegate to the canonical constructor with `this(...)`.
 ///
+/// ## Hints
+/// - `this(...)` must not be inside a `try` block, but the code before it may
+///   be. A local variable that is assigned in a `try` and in no other path can
+///   be passed on afterwards.
+///
 /// ## Verify
 /// `make test ex=03`
 public record OpeningHours(LocalTime opens, LocalTime closes) {

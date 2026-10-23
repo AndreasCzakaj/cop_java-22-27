@@ -1,5 +1,10 @@
 package workshop.ex04_primitive_patterns;
 
+import workshop.ex04_primitive_patterns.Reading.BatteryLevel;
+import workshop.ex04_primitive_patterns.Reading.Heartbeat;
+import workshop.ex04_primitive_patterns.Reading.Humidity;
+import workshop.ex04_primitive_patterns.Reading.Temperature;
+
 import java.util.Optional;
 
 /// # Exercise 04 / Task 3: Unnamed variables and patterns
