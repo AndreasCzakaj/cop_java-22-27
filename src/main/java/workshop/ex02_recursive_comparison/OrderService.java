@@ -1,11 +1,8 @@
 package workshop.ex02_recursive_comparison;
 
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public final class OrderService {
 
@@ -28,25 +25,14 @@ public final class OrderService {
         var shippingAddress = customer.shippingAddress() != null ? customer.shippingAddress() : customer.billingAddress();
 
         return new Order(UUID.randomUUID(), customer.email(), lines, customer.billingAddress(), shippingAddress,
-                totalOf(lines), Instant.now());
-    }
-
-    /// Splits an order into one order per warehouse, so that each warehouse ships its part on its own.
-    public List<Order> splitByWarehouse(Order order) {
-        return order.lines().stream()
-                .collect(Collectors.groupingBy(OrderLine::warehouse))
-                .values().stream()
-                .map(lines -> new Order(UUID.randomUUID(), order.customerEmail(), lines, order.billingAddress(),
-                        order.shippingAddress(), totalOf(lines), order.createdAt()))
-                .toList();
+                totalOf(lines));
     }
 
     private static OrderLine toLine(Product product, int quantity) {
-        return new OrderLine(product.sku(), product.name(), quantity, product.unitPrice(),
-                product.unitPrice().multiply(BigDecimal.valueOf(quantity)), product.warehouse());
+        return new OrderLine(product.sku(), product.name(), quantity, product.unitPrice(), product.unitPrice() * quantity);
     }
 
-    private static BigDecimal totalOf(List<OrderLine> lines) {
-        return lines.stream().map(OrderLine::lineTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+    private static int totalOf(List<OrderLine> lines) {
+        return lines.stream().mapToInt(OrderLine::lineTotal).sum();
     }
 }
