@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 /// ## Hints
 /// - `Gatherers.windowSliding(n)`, `Gatherers.windowFixed(n)`,
 ///   `Gatherers.scan(initial, function)`
+/// - What does `windowSliding(3)` emit for a stream of only two elements?
 ///
 /// ## Verify
 /// `make test ex=06`

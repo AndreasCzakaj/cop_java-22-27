@@ -60,14 +60,14 @@ The container runs as user 1000:1000. If your Linux user has another id, put
 
 ## Exercises
 
-| #  | Topic                                         | Java      | Files to work on                                            | Minutes |
-|----|-----------------------------------------------|-----------|-------------------------------------------------------------|---------|
-| 01 | Compact source files and instance `main`      | 22, 25    | `ex01-compact-source/SlowestEndpoints.java`, `LogLine.java` | 20      |
-| 02 | AssertJ `usingRecursiveComparison()`          | –         | `OrderServiceTest` (the test!)                              | 20      |
-| 03 | Flexible constructor bodies                   | 25        | `Isbn` · `SalesReport` · `OpeningHours`                     | 20      |
-| 04 | Primitive patterns, unnamed variables (`_`)   | 27 (prev.), 22 | `Config` · `JsonWriter` · `Alerts`                     | 20      |
-| 05 | Structured concurrency, scoped values         | 27 (prev.), 25 | `RequestContext` · `ProductPageService` · `ShippingQuotes` | 20 |
-| 06 | Stream gatherers                              | 24        | `Revenue` · `MoreGatherers`                                 | 20      |
+| #  | Topic                                       | Java               | Files to work on                                            | Minutes |
+|----|---------------------------------------------|--------------------|-------------------------------------------------------------|---------|
+| 01 | Compact source files and instance `main`    | 22, 25             | `ex01-compact-source/SlowestEndpoints.java`, `LogLine.java` | 20      |
+| 02 | AssertJ `usingRecursiveComparison()`        | –                  | `OrderServiceTest` (the test!)                              | 20      |
+| 03 | Flexible constructor bodies                 | 25                 | `Isbn` · `SalesReport` · `OpeningHours`                     | 20      |
+| 04 | Primitive patterns, unnamed variables (`_`) | 27 (preview), 22   | `Config` · `JsonWriter` · `Alerts`                          | 20      |
+| 05 | Structured concurrency, scoped values       | 27 (preview), 25   | `RequestContext` · `ProductPageService` · `ShippingQuotes`  | 20      |
+| 06 | Stream gatherers                            | 24                 | `Revenue` · `MoreGatherers`                                 | 20      |
 
 A "·" separates the tasks of an exercise. The minutes are estimates and add
 up to 120, which leaves 60 minutes of a three-hour session for introductions
