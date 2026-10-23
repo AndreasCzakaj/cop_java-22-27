@@ -1,6 +1,6 @@
 package workshop.ex02_recursive_comparison;
 
-import java.math.BigDecimal;
-
-public record OrderLine(String sku, String name, int quantity, BigDecimal unitPrice, BigDecimal lineTotal, String warehouse) {
+/// @param unitPrice in cents
+/// @param lineTotal in cents
+public record OrderLine(String sku, String name, int quantity, int unitPrice, int lineTotal) {
 }
