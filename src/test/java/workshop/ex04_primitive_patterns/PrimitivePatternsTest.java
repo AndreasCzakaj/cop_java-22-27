@@ -1,5 +1,6 @@
 package workshop.ex04_primitive_patterns;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,6 +43,7 @@ class PrimitivePatternsTest {
                 Map.entry("debug", true)));
 
         @Test
+        @Disabled("implement the production code first")
         void readsExactInts() {
             assertThat(config.getInt("port")).isEqualTo(8080);
             assertThat(config.getInt("poolSize")).isEqualTo(20);
@@ -51,6 +53,7 @@ class PrimitivePatternsTest {
         }
 
         @ParameterizedTest
+        @Disabled("implement the production code first")
         @ValueSource(strings = {"timeoutSeconds", "maxUploadBytes", "maxDownloadBytes", "host", "debug"})
         void rejectsEverythingElse(String key) {
             assertThatIllegalArgumentException()
@@ -60,6 +63,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void rejectsAFractionWithAHelpfulMessage() {
             assertThatIllegalArgumentException()
                     .isThrownBy(() -> config.getInt("timeoutSeconds"))
@@ -67,6 +71,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void rejectsAMissingKey() {
             assertThatIllegalArgumentException()
                     .isThrownBy(() -> config.getInt("missing"))
@@ -74,6 +79,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void letsThePatternsDoTheWork() {
             var code = Source.ofClass(Config.class);
 
@@ -90,6 +96,7 @@ class PrimitivePatternsTest {
     class Task2JsonWriter {
 
         @Test
+        @Disabled("implement the production code first")
         void writesWholeNumbersWithoutAFraction() {
             var person = new LinkedHashMap<String, Json>();
             person.put("name", new JsonString("Ada"));
@@ -99,6 +106,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void writesNumbers() {
             assertThat(JsonWriter.write(new JsonNumber(-7))).isEqualTo("-7");
             assertThat(JsonWriter.write(new JsonNumber(0))).isEqualTo("0");
@@ -108,12 +116,14 @@ class PrimitivePatternsTest {
         }
 
         @ParameterizedTest
+        @Disabled("implement the production code first")
         @ValueSource(doubles = {Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY})
         void rejectsNumbersThatJsonCannotRepresent(double number) {
             assertThatIllegalArgumentException().isThrownBy(() -> JsonWriter.write(new JsonNumber(number)));
         }
 
         @Test
+        @Disabled("implement the production code first")
         void writesEverythingElseAsBefore() {
             var json = new JsonArray(List.of(
                     new JsonNull(),
@@ -126,6 +136,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void deconstructsTheRecords() {
             var code = Source.ofClass(JsonWriter.class);
 
@@ -142,6 +153,7 @@ class PrimitivePatternsTest {
         static final Instant NOW = Instant.parse("2026-10-23T08:00:00Z");
 
         @Test
+        @Disabled("implement the production code first")
         void raisesAFireAlarm() {
             assertThat(Alerts.alertFor(new Temperature("T-17", 51.5, NOW)))
                     .contains("Fire alarm: sensor T-17 reports 51.5 °C");
@@ -150,12 +162,14 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void asksForANewBattery() {
             assertThat(Alerts.alertFor(new BatteryLevel("B-03", 7, NOW)))
                     .contains("Replace the battery of sensor B-03 (7 %)");
         }
 
         @Test
+        @Disabled("implement the production code first")
         void staysQuietOtherwise() {
             assertThat(Alerts.alertFor(new Temperature("T-17", 49.9, NOW))).isEmpty();
             assertThat(Alerts.alertFor(new BatteryLevel("B-03", 10, NOW))).isEmpty();
@@ -164,6 +178,7 @@ class PrimitivePatternsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void usesUnnamedPatterns() {
             var code = Source.ofClass(Alerts.class);
 

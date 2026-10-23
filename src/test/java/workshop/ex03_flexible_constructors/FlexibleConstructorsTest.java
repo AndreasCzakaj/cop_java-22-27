@@ -1,5 +1,6 @@
 package workshop.ex03_flexible_constructors;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,12 +29,14 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void acceptsHyphensAndSpaces() {
             assertThat(new Isbn("978-3-16-148410-0").value()).isEqualTo("9783161484100");
             assertThat(new Isbn("978 0 13 468599 1").value()).isEqualTo("9780134685991");
         }
 
         @Test
+        @Disabled("implement the production code first")
         void registersValidIsbns() {
             new Isbn("978-3-16-148410-0");
 
@@ -41,6 +44,7 @@ class FlexibleConstructorsTest {
         }
 
         @ParameterizedTest
+        @Disabled("implement the production code first")
         @ValueSource(strings = {"978-3-16-148410-1", "978-3-16-14841", "ISBN 978-3-16-148410-0"})
         void rejectsInvalidIsbns(String invalid) {
             assertThatIllegalArgumentException()
@@ -49,6 +53,7 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void neverRegistersAnInvalidIsbn() {
             catchThrowable(() -> new Isbn("978-3-16-148410-1"));
 
@@ -56,6 +61,7 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void passesALocalVariableToSuper() {
             assertThat(Source.ofClass(Isbn.class).contains("\\bsuper\\(\\s*\\w+\\s*\\)\\s*;"))
                     .as("super(<local variable>);")
@@ -67,6 +73,7 @@ class FlexibleConstructorsTest {
     class Task2SalesReport {
 
         @Test
+        @Disabled("implement the production code first")
         void hasATitle() {
             var revenue = new LinkedHashMap<String, BigDecimal>();
             revenue.put("Keyboard", new BigDecimal("1299.00"));
@@ -82,6 +89,7 @@ class FlexibleConstructorsTest {
         }
 
         @ParameterizedTest
+        @Disabled("implement the production code first")
         @ValueSource(strings = {"", "  "})
         void rejectsABlankRegion(String region) {
             assertThatIllegalArgumentException()
@@ -89,6 +97,7 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void keepsTheFieldsFinal() {
             var code = Source.ofClass(SalesReport.class);
 
@@ -101,18 +110,21 @@ class FlexibleConstructorsTest {
     class Task3OpeningHours {
 
         @Test
+        @Disabled("implement the production code first")
         void parsesTheText() {
             assertThat(new OpeningHours("09:00-17:30"))
                     .isEqualTo(new OpeningHours(LocalTime.of(9, 0), LocalTime.of(17, 30)));
         }
 
         @Test
+        @Disabled("implement the production code first")
         void allowsSpaces() {
             assertThat(new OpeningHours(" 09:00 - 17:30 "))
                     .isEqualTo(new OpeningHours(LocalTime.of(9, 0), LocalTime.of(17, 30)));
         }
 
         @ParameterizedTest
+        @Disabled("implement the production code first")
         @ValueSource(strings = {"09:00", "09:00-12:00-13:00", "9-5", "09:00-noon", ""})
         void rejectsMalformedText(String text) {
             assertThatIllegalArgumentException()
@@ -121,6 +133,7 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void keepsTheRuleOfTheCanonicalConstructor() {
             assertThatIllegalArgumentException()
                     .isThrownBy(() -> new OpeningHours("17:30-09:00"))
@@ -128,6 +141,7 @@ class FlexibleConstructorsTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void splitsOnceAndDelegates() {
             var code = Source.ofClass(OpeningHours.class);
 

@@ -1,5 +1,6 @@
 package workshop.ex05_structured_concurrency;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -26,11 +27,13 @@ class StructuredConcurrencyTest {
     class Task1RequestContext {
 
         @Test
+        @Disabled("implement the production code first")
         void bindsTheTenantWhileTheActionRuns() throws Exception {
             assertThat(RequestContext.runAs("acme", RequestContext::tenant)).isEqualTo("acme");
         }
 
         @Test
+        @Disabled("implement the production code first")
         void bindsAnotherTenantForANestedAction() throws Exception {
             var tenants = RequestContext.runAs("acme", () -> List.of(
                     RequestContext.tenant(),
@@ -41,6 +44,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void hasNoTenantOutside() throws Exception {
             RequestContext.runAs("acme", RequestContext::tenant);
 
@@ -48,6 +52,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void passesTheTenantOnToSubtasks() throws Exception {
             var tenant = RequestContext.runAs("acme", () -> {
                 try (var scope = StructuredTaskScope.open()) {
@@ -61,6 +66,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void usesAScopedValue() {
             var code = Source.ofClass(RequestContext.class);
 
@@ -81,6 +87,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void loadsThePage() throws Exception {
             var page = RequestContext.runAs("acme", () -> service().load("KB-01"));
 
@@ -89,6 +96,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void callsTheBackendsConcurrently() throws Exception {
             var start = System.nanoTime();
             RequestContext.runAs("acme", () -> service().load("KB-01"));
@@ -97,6 +105,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void failsAtOnceAndCancelsTheOtherCalls() throws Exception {
             var failure = new IllegalStateException("Stock service is down");
             var failingStock = new Backend<Integer>(50, () -> { throw failure; });
@@ -112,6 +121,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void usesAStructuredTaskScope() {
             var code = Source.ofClass(ProductPageService.class);
 
@@ -130,6 +140,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void returnsTheFirstQuote() throws Exception {
             var slow = new Backend<>(5_000, () -> quoteBy("Snail Mail"));
             var fast = new Backend<>(200, () -> quoteBy("Speedy"));
@@ -145,6 +156,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void failsIfAllCarriersFail() {
             var down = new Backend<Quote>(10, () -> { throw new IllegalStateException("503 Service Unavailable"); });
             var broken = new Backend<Quote>(50, () -> { throw new IllegalArgumentException("Unknown country"); });
@@ -154,6 +166,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void givesUpAfterTheTimeout() {
             var slow = new Backend<>(5_000, () -> quoteBy("Snail Mail"));
             var slower = new Backend<>(8_000, () -> quoteBy("Tortoise Express"));
@@ -167,6 +180,7 @@ class StructuredConcurrencyTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void usesAStructuredTaskScopeWithAJoiner() {
             var code = Source.ofClass(ShippingQuotes.class);
 

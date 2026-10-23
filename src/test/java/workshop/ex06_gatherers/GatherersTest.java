@@ -1,5 +1,6 @@
 package workshop.ex06_gatherers;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -20,6 +21,7 @@ class GatherersTest {
     class Task1Revenue {
 
         @Test
+        @Disabled("implement the production code first")
         void computesTheMovingAverage() {
             assertThat(Revenue.movingAverage(Stream.of(10, 20, 60, 30, 40), 3)).containsExactly(30.0, 110 / 3.0, 130 / 3.0);
             assertThat(Revenue.movingAverage(Stream.of(10, 20, 60), 2)).containsExactly(15.0, 40.0);
@@ -27,12 +29,14 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void computesTheRunningTotal() {
             assertThat(Revenue.runningTotal(Stream.of(10, 20, 60, -5))).containsExactly(10, 30, 90, 85);
             assertThat(Revenue.runningTotal(Stream.empty())).isEmpty();
         }
 
         @Test
+        @Disabled("implement the production code first")
         void makesBatches() {
             var ids = IntStream.rangeClosed(1, 7).mapToObj(i -> "A-" + i);
 
@@ -41,6 +45,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void usesGatherers() {
             var code = Source.ofClass(Revenue.class);
 
@@ -57,6 +62,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void keepsTheFirstElementPerKey() {
             var notifications = Stream.of(
                     new Notification("ada@example.com", "Your order has shipped"),
@@ -70,6 +76,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void worksWithAnyKey() {
             assertThat(Stream.of("kiwi", "fig", "plum", "apple", "date", "banana")
                     .gather(MoreGatherers.distinctBy(String::length)))
@@ -77,6 +84,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void worksOnInfiniteStreams() {
             assertThat(Stream.iterate(1, i -> i + 1).gather(MoreGatherers.distinctBy(i -> i % 4)).limit(4))
                     .containsExactly(1, 2, 3, 4);
@@ -93,6 +101,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void splitsClicksAtLongPauses() {
             var clicks = Stream.of(click("10:00"), click("10:05"), click("10:20"), click("11:30"), click("11:31"));
 
@@ -102,6 +111,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void aPauseOfExactlyMaxGapContinuesTheSession() {
             var clicks = Stream.of(click("10:00"), click("10:30"), click("11:01"));
 
@@ -111,6 +121,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void handlesEdgeCases() {
             assertThat(Stream.<Click>empty().gather(MoreGatherers.sessions(HALF_AN_HOUR))).isEmpty();
             assertThat(Stream.of(click("10:00")).gather(MoreGatherers.sessions(HALF_AN_HOUR)))
@@ -118,6 +129,7 @@ class GatherersTest {
         }
 
         @Test
+        @Disabled("implement the production code first")
         void worksOnInfiniteStreams() {
             // Three clicks 20 minutes apart, then a pause of more than 2 hours, and so on forever.
             var start = click("00:00");

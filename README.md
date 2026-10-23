@@ -18,7 +18,7 @@ level to "27 (Preview)".
 git clone <repository-url> java-workshop
 cd java-workshop
 make install        # pulls the JDK 27 image and downloads the dependencies
-make test           # runs all tests: most of them fail, that is your job
+make test           # runs all tests: they are all skipped for now
 ```
 
 | Command                  | What it does                                         |
@@ -50,6 +50,8 @@ The container runs as user 1000:1000. If your Linux user has another id, put
 - The tests in `src/test/java/workshop/exNN_.../` check the behaviour and,
   where a task says "use feature X", also the source code. Do not change the
   tests.
+- All tests start out `@Disabled`, so the build stays quiet. When you start
+  on a task, remove `@Disabled` from its tests and watch them fail first.
 - Exercise 02 is the other way round: the code is finished and you write the
   tests.
 - Some tasks start with working legacy code and green behaviour tests: there

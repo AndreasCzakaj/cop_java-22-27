@@ -1,5 +1,6 @@
 package workshop.ex02_recursive_comparison;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -71,6 +72,7 @@ class OrderServiceTest {
 
     /// The test that has been in place for years. Leave it as it is.
     @Test
+    @Disabled("remove @Disabled to see the legacy test pass")
     void legacyTest() {
         var order = service.placeOrder(ADA, Map.of("KB-01", 2, "MN-27", 1));
         var dto = mapper.toDto(order);
@@ -94,6 +96,7 @@ class OrderServiceTest {
     /// - The order of the lines does not matter. (Run the test a few times
     ///   without handling this. `Map.of()` has no defined iteration order.)
     @Test
+    @Disabled("remove @Disabled to write this test")
     void placeOrderCreatesTheExpectedOrder() {
         fail("TODO");
     }
@@ -105,6 +108,7 @@ class OrderServiceTest {
     /// Check the remaining fields (`id`, `total`, `createdAt`) with ordinary
     /// assertions.
     @Test
+    @Disabled("remove @Disabled to write this test")
     void theDtoContainsTheDataOfTheOrder() {
         fail("TODO");
     }
@@ -119,6 +123,7 @@ class OrderServiceTest {
     /// - Each has a new random ID; `createdAt` is the one of the original order.
     /// - Same rules for amounts and lines as in task 1.
     @Test
+    @Disabled("remove @Disabled to write this test")
     void splitByWarehouseCreatesOneOrderPerWarehouse() {
         fail("TODO");
     }

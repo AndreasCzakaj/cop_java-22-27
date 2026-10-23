@@ -1,5 +1,6 @@
 package workshop.ex01_compact_source;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import workshop.support.Source;
@@ -23,6 +24,7 @@ class SlowestEndpointsTest {
     private static final Path LOG_LINE = DIR.resolve("LogLine.java");
 
     @Test
+    @Disabled("implement the production code first")
     void printsTheTopThreeLikeTheOldScript() throws Exception {
         var result = run("", DIR.resolve("access.log").toString(), "3");
 
@@ -38,6 +40,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void printsTheTopFiveByDefault() throws Exception {
         var result = run("", DIR.resolve("access.log").toString());
 
@@ -53,6 +56,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void sortsEqualAveragesByMethodThenPathAndSkipsNothing(@TempDir Path tmp) throws Exception {
         var log = Files.writeString(tmp.resolve("tiny.log"), """
                 2026-10-21T08:00:01Z POST /b 200 10ms
@@ -73,6 +77,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void asksForTheLogFileIfItIsMissing() throws Exception {
         var result = run(DIR.resolve("access.log") + "\n");
 
@@ -82,6 +87,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void reportsAMissingFile() throws Exception {
         var result = run("", "no-such.log");
 
@@ -90,6 +96,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void isACompactSourceFile() {
         var source = Source.ofFile(SCRIPT);
 
@@ -102,6 +109,7 @@ class SlowestEndpointsTest {
     }
 
     @Test
+    @Disabled("implement the production code first")
     void parsesLinesInASeparateRecord() {
         assertThat(LOG_LINE).as("LogLine.java next to SlowestEndpoints.java").exists();
         assertThat(Source.ofFile(LOG_LINE).contains("\\brecord\\s+LogLine\\b")).as("a record LogLine").isTrue();
