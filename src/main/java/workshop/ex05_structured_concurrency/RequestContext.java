@@ -37,26 +37,16 @@ import java.util.concurrent.Callable;
 /// `make test ex=05`
 public final class RequestContext {
 
-    private static final ThreadLocal<String> TENANT = new ThreadLocal<>();
+    private static final ScopedValue<String> TENANT = ScopedValue.newInstance();
 
     private RequestContext() {
     }
 
     public static <T> T runAs(String tenant, Callable<T> action) throws Exception {
-        var previous = TENANT.get();
-        TENANT.set(tenant);
-        try {
-            return action.call();
-        } finally {
-            TENANT.set(previous);
-        }
+        return ScopedValue.where(TENANT, tenant).call(action::call);
     }
 
     public static String tenant() {
-        var tenant = TENANT.get();
-        if (tenant == null) {
-            throw new IllegalStateException("No tenant bound");
-        }
-        return tenant;
+        return TENANT.orElseThrow(() -> new IllegalStateException("No tenant bound"));
     }
 }

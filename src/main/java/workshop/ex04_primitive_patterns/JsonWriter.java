@@ -46,22 +46,19 @@ public final class JsonWriter {
     }
 
     public static String write(Json json) {
-        if (json instanceof JsonNull) {
-            return "null";
-        } else if (json instanceof JsonBoolean bool) {
-            return String.valueOf(bool.value());
-        } else if (json instanceof JsonNumber number) {
-            return String.valueOf(number.value());
-        } else if (json instanceof JsonString string) {
-            return quote(string.value());
-        } else if (json instanceof JsonArray array) {
-            return array.elements().stream().map(JsonWriter::write).collect(Collectors.joining(",", "[", "]"));
-        } else if (json instanceof JsonObject object) {
-            return object.members().entrySet().stream()
+        return switch (json) {
+            case JsonNull _ -> "null";
+            case JsonBoolean(boolean value) -> String.valueOf(value);
+            case JsonNumber(long value) -> String.valueOf(value);
+            case JsonNumber(double value) when Double.isNaN(value) || Double.isInfinite(value) ->
+                    throw new IllegalArgumentException(value + " is not allowed in JSON");
+            case JsonNumber(double value) -> String.valueOf(value);
+            case JsonString(String value) -> quote(value);
+            case JsonArray(var elements) -> elements.stream().map(JsonWriter::write).collect(Collectors.joining(",", "[", "]"));
+            case JsonObject(var members) -> members.entrySet().stream()
                     .map(member -> quote(member.getKey()) + ":" + write(member.getValue()))
                     .collect(Collectors.joining(",", "{", "}"));
-        }
-        throw new IllegalStateException("Unknown JSON type: " + json);
+        };
     }
 
     private static String quote(String text) {

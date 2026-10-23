@@ -1,6 +1,7 @@
 package workshop.ex05_structured_concurrency;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.StructuredTaskScope;
 
 /// # Exercise 05 / Task 2: Fork, join, fail together
 /// *(Java 27: structured concurrency, 7th preview)*
@@ -54,9 +55,12 @@ public final class ProductPageService {
     }
 
     public ProductPage load(String sku) throws ExecutionException, InterruptedException {
-        var price = prices.priceOf(sku);
-        var available = stock.available(sku);
-        var rating = reviews.averageRating(sku);
-        return new ProductPage(sku, RequestContext.tenant(), price, available, rating);
+        try (var scope = StructuredTaskScope.open()) {
+            var price = scope.fork(() -> prices.priceOf(sku));
+            var available = scope.fork(() -> stock.available(sku));
+            var rating = scope.fork(() -> reviews.averageRating(sku));
+            scope.join();
+            return new ProductPage(sku, RequestContext.tenant(), price.get(), available.get(), rating.get());
+        }
     }
 }

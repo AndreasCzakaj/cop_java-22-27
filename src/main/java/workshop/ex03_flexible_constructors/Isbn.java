@@ -31,10 +31,11 @@ package workshop.ex03_flexible_constructors;
 public final class Isbn extends ProductCode {
 
     public Isbn(String isbn) {
-        super(isbn.replace("-", "").replace(" ", ""));
-        if (!hasValidChecksum(value())) {
+        var digits = isbn.replace("-", "").replace(" ", "");
+        if (!hasValidChecksum(digits)) {
             throw new IllegalArgumentException("Invalid ISBN-13: " + isbn);
         }
+        super(digits);
     }
 
     private static boolean hasValidChecksum(String digits) {

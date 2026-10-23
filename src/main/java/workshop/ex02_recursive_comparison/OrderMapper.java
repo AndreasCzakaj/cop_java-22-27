@@ -10,7 +10,7 @@ public final class OrderMapper {
                 order.customerEmail(),
                 order.lines().stream().map(OrderMapper::toDto).toList(),
                 toDto(order.billingAddress()),
-                toDto(order.billingAddress()),
+                toDto(order.shippingAddress()),
                 order.total().setScale(2, RoundingMode.HALF_UP).toPlainString(),
                 order.createdAt().toString());
     }

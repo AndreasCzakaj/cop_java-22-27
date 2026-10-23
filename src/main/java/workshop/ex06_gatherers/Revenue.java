@@ -1,7 +1,7 @@
 package workshop.ex06_gatherers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
 /// # Exercise 06 / Task 1: The built-in gatherers
@@ -40,37 +40,24 @@ public final class Revenue {
     /// The average of each `days` consecutive days, e.g. `[10, 20, 60]`, 2 days → `[15.0, 40.0]`.
     /// Empty if there are fewer than `days` days.
     public static List<Double> movingAverage(Stream<Integer> dailyRevenue, int days) {
-        var revenue = dailyRevenue.toList();
-        var averages = new ArrayList<Double>();
-        for (int start = 0; start + days <= revenue.size(); start++) {
-            int sum = 0;
-            for (int i = start; i < start + days; i++) {
-                sum += revenue.get(i);
-            }
-            averages.add((double) sum / days);
-        }
-        return averages;
+        return dailyRevenue
+                .gather(Gatherers.windowSliding(days))
+                .filter(window -> window.size() == days)
+                .map(window -> window.stream().mapToInt(Integer::intValue).average().orElseThrow())
+                .toList();
     }
 
     /// The total so far after each day, e.g. `[10, 20, 60]` → `[10, 30, 90]`.
     public static List<Integer> runningTotal(Stream<Integer> dailyRevenue) {
-        var revenue = dailyRevenue.toList();
-        var totals = new ArrayList<Integer>();
-        int total = 0;
-        for (int amount : revenue) {
-            total += amount;
-            totals.add(total);
-        }
-        return totals;
+        return dailyRevenue
+                .gather(Gatherers.scan(() -> 0, Integer::sum))
+                .toList();
     }
 
     /// Order IDs in batches of `size` for the bulk import into the ERP system. The last batch may be smaller.
     public static List<List<String>> batches(Stream<String> orderIds, int size) {
-        var ids = orderIds.toList();
-        var batches = new ArrayList<List<String>>();
-        for (int start = 0; start < ids.size(); start += size) {
-            batches.add(ids.subList(start, Math.min(start + size, ids.size())));
-        }
-        return batches;
+        return orderIds
+                .gather(Gatherers.windowFixed(size))
+                .toList();
     }
 }

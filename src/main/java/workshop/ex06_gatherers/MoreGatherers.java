@@ -1,7 +1,10 @@
 package workshop.ex06_gatherers;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Gatherer;
 
@@ -60,10 +63,29 @@ public final class MoreGatherers {
     }
 
     public static <T, K> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends K> key) {
-        throw new UnsupportedOperationException("TODO");
+        return Gatherer.<T, Set<K>, T>ofSequential(
+                HashSet::new,
+                Gatherer.Integrator.ofGreedy((seen, element, downstream) ->
+                        !seen.add(key.apply(element)) || downstream.push(element)));
     }
 
     public static Gatherer<Click, ?, List<Click>> sessions(Duration maxGap) {
-        throw new UnsupportedOperationException("TODO");
+        return Gatherer.<Click, List<Click>, List<Click>>ofSequential(
+                ArrayList::new,
+                Gatherer.Integrator.ofGreedy((session, click, downstream) -> {
+                    var pause = session.isEmpty() ? Duration.ZERO : Duration.between(session.getLast().at(), click.at());
+                    var keepGoing = true;
+                    if (pause.compareTo(maxGap) > 0) {
+                        keepGoing = downstream.push(List.copyOf(session));
+                        session.clear();
+                    }
+                    session.add(click);
+                    return keepGoing;
+                }),
+                (session, downstream) -> {
+                    if (!session.isEmpty()) {
+                        downstream.push(List.copyOf(session));
+                    }
+                });
     }
 }

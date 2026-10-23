@@ -57,17 +57,19 @@ public final class Config {
 
     public int getInt(String key) {
         Object value = values.get(key);
-        if (value instanceof Number number) {
-            return number.intValue();
-        }
-        if (value instanceof String text) {
-            try {
-                return Integer.parseInt(text.strip());
-            } catch (NumberFormatException e) {
-                throw notAnInt(key, value);
+        return switch (value) {
+            case int i -> i;
+            case long l when l instanceof int i -> i;
+            case double d when d instanceof int i -> i;
+            case String text -> {
+                try {
+                    yield Integer.parseInt(text.strip());
+                } catch (NumberFormatException _) {
+                    throw notAnInt(key, value);
+                }
             }
-        }
-        throw notAnInt(key, value);
+            case null, default -> throw notAnInt(key, value);
+        };
     }
 
     private static IllegalArgumentException notAnInt(String key, Object value) {

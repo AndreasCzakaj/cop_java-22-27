@@ -2,6 +2,8 @@ package workshop.ex05_structured_concurrency;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Joiner;
 
 /// # Exercise 05 / Task 3: The first answer wins
 /// *(Java 27: structured concurrency, 7th preview)*
@@ -43,14 +45,13 @@ public final class ShippingQuotes {
     }
 
     public Quote firstQuote(Parcel parcel) throws NoQuoteException, InterruptedException {
-        RuntimeException lastFailure = null;
-        for (var carrier : carriers) {
-            try {
-                return carrier.quote(parcel);
-            } catch (RuntimeException e) {
-                lastFailure = e;
+        try (var scope = StructuredTaskScope.open(
+                Joiner.<Quote, NoQuoteException>anySuccessfulOrThrow(NoQuoteException::new),
+                config -> config.withTimeout(timeout))) {
+            for (var carrier : carriers) {
+                scope.fork(() -> carrier.quote(parcel));
             }
+            return scope.join();
         }
-        throw new NoQuoteException(lastFailure);
     }
 }

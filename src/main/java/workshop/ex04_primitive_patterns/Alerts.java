@@ -1,5 +1,10 @@
 package workshop.ex04_primitive_patterns;
 
+import workshop.ex04_primitive_patterns.Reading.BatteryLevel;
+import workshop.ex04_primitive_patterns.Reading.Heartbeat;
+import workshop.ex04_primitive_patterns.Reading.Humidity;
+import workshop.ex04_primitive_patterns.Reading.Temperature;
+
 import java.util.Optional;
 
 /// # Exercise 04 / Task 3: Unnamed variables and patterns
@@ -40,6 +45,12 @@ public final class Alerts {
     }
 
     public static Optional<String> alertFor(Reading reading) {
-        throw new UnsupportedOperationException("TODO");
+        return switch (reading) {
+            case Temperature(var sensorId, double celsius, _) when celsius >= 50 ->
+                    Optional.of("Fire alarm: sensor " + sensorId + " reports " + celsius + " °C");
+            case BatteryLevel(var sensorId, int percent, _) when percent < 10 ->
+                    Optional.of("Replace the battery of sensor " + sensorId + " (" + percent + " %)");
+            case Temperature _, Humidity _, BatteryLevel _, Heartbeat _ -> Optional.empty();
+        };
     }
 }

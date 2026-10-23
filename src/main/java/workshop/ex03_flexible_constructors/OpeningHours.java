@@ -1,6 +1,7 @@
 package workshop.ex03_flexible_constructors;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 /// # Exercise 03 / Task 3: Prepare the arguments of `this(...)`
 /// *(Java 25: flexible constructor bodies)*
@@ -38,8 +39,19 @@ public record OpeningHours(LocalTime opens, LocalTime closes) {
     }
 
     public OpeningHours(String text) {
-        // TODO
-        this(LocalTime.MIN, LocalTime.MAX);
-        throw new UnsupportedOperationException("TODO");
+        var times = text.split("-");
+        var malformed = new IllegalArgumentException("Expected \"HH:MM-HH:MM\" but got \"" + text + "\"");
+        if (times.length != 2) {
+            throw malformed;
+        }
+        LocalTime opens;
+        LocalTime closes;
+        try {
+            opens = LocalTime.parse(times[0].strip());
+            closes = LocalTime.parse(times[1].strip());
+        } catch (DateTimeParseException _) {
+            throw malformed;
+        }
+        this(opens, closes);
     }
 }

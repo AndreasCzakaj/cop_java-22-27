@@ -44,9 +44,12 @@ public final class SalesReport extends Report {
     private final YearMonth month;
 
     public SalesReport(String region, YearMonth month, Map<String, BigDecimal> revenueByProduct) {
-        super();
+        if (region.isBlank()) {
+            throw new IllegalArgumentException("The region must not be blank.");
+        }
         this.region = region;
         this.month = month;
+        super();
         revenueByProduct.forEach((product, revenue) -> addLine(product + ": " + revenue));
     }
 

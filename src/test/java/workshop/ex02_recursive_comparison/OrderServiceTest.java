@@ -1,12 +1,15 @@
 package workshop.ex02_recursive_comparison;
 
+import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 /// # Exercise 02: AssertJ - comparing whole object graphs
 /// *(AssertJ `usingRecursiveComparison()`, not tied to a Java version)*
@@ -95,7 +98,21 @@ class OrderServiceTest {
     ///   without handling this. `Map.of()` has no defined iteration order.)
     @Test
     void placeOrderCreatesTheExpectedOrder() {
-        fail("TODO");
+        var order = service.placeOrder(ADA, Map.of("KB-01", 2, "MN-27", 1));
+
+        var expected = new Order(null, "ada@example.com",
+                List.of(
+                        new OrderLine("KB-01", "Keyboard", 2, new BigDecimal("49.90"), new BigDecimal("99.80"), "Hamburg"),
+                        new OrderLine("MN-27", "Monitor 27\"", 1, new BigDecimal("249.00"), new BigDecimal("249.00"), "Munich")),
+                ADA_HOME, ADA_OFFICE, new BigDecimal("348.80"), Instant.now());
+
+        assertThat(order)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .withEqualsForFields((Instant a, Instant b) -> atMostOneSecondApart(a, b), "createdAt")
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .ignoringCollectionOrder()
+                .isEqualTo(expected);
     }
 
     /// ## Task 2: the DTO contains the data of the order
@@ -106,7 +123,17 @@ class OrderServiceTest {
     /// assertions.
     @Test
     void theDtoContainsTheDataOfTheOrder() {
-        fail("TODO");
+        var order = service.placeOrder(ADA, Map.of("KB-01", 2, "MN-27", 1));
+
+        var dto = mapper.toDto(order);
+
+        assertThat(dto)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "total", "createdAt")
+                .isEqualTo(order);
+        assertThat(dto.id()).isEqualTo(order.id().toString());
+        assertThat(dto.total()).isEqualTo("348.80");
+        assertThat(Instant.parse(dto.createdAt())).isEqualTo(order.createdAt());
     }
 
     /// ## Task 3: splitByWarehouse() creates one order per warehouse
@@ -120,6 +147,32 @@ class OrderServiceTest {
     /// - Same rules for amounts and lines as in task 1.
     @Test
     void splitByWarehouseCreatesOneOrderPerWarehouse() {
-        fail("TODO");
+        var order = service.placeOrder(ADA, Map.of("KB-01", 2, "MS-02", 1, "MN-27", 1));
+
+        var split = service.splitByWarehouse(order);
+
+        var fromHamburg = new Order(null, "ada@example.com",
+                List.of(
+                        new OrderLine("KB-01", "Keyboard", 2, new BigDecimal("49.90"), new BigDecimal("99.80"), "Hamburg"),
+                        new OrderLine("MS-02", "Mouse", 1, new BigDecimal("19.90"), new BigDecimal("19.90"), "Hamburg")),
+                ADA_HOME, ADA_OFFICE, new BigDecimal("119.70"), order.createdAt());
+        var fromMunich = new Order(null, "ada@example.com",
+                List.of(new OrderLine("MN-27", "Monitor 27\"", 1, new BigDecimal("249.00"), new BigDecimal("249.00"), "Munich")),
+                ADA_HOME, ADA_OFFICE, new BigDecimal("249.00"), order.createdAt());
+
+        var configuration = RecursiveComparisonConfiguration.builder()
+                .withIgnoredFields("id")
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .withIgnoreCollectionOrder(true)
+                .build();
+
+        assertThat(split)
+                .usingRecursiveFieldByFieldElementComparator(configuration)
+                .containsExactlyInAnyOrder(fromHamburg, fromMunich);
+        assertThat(split).extracting(Order::id).doesNotContainNull().doesNotHaveDuplicates().doesNotContain(order.id());
+    }
+
+    private static boolean atMostOneSecondApart(Instant a, Instant b) {
+        return Duration.between(a, b).abs().compareTo(Duration.ofSeconds(1)) <= 0;
     }
 }
