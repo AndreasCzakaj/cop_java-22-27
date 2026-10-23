@@ -64,7 +64,7 @@ The container runs as user 1000:1000. If your Linux user has another id, put
 
 | #  | Topic                                       | Java               | Files to work on                                            | Minutes |
 |----|---------------------------------------------|--------------------|-------------------------------------------------------------|---------|
-| 01 | Compact source files and instance `main`    | 22, 25             | `ex01-compact-source/SlowestEndpoints.java`, `LogLine.java` | 20      |
+| 01 | Compact source files and instance `main`    | 22, 25             | `ex01-compact-source/SlowestEndpoints.java`                 | 20      |
 | 02 | AssertJ `usingRecursiveComparison()`        | –                  | `OrderServiceTest` (the test!)                              | 20      |
 | 03 | Flexible constructor bodies                 | 25                 | `Isbn` · `SalesReport` · `OpeningHours`                     | 20      |
 | 04 | Primitive patterns, unnamed variables (`_`) | 27 (preview), 22   | `Config` · `JsonWriter` · `Alerts`                          | 20      |
