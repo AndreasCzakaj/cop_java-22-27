@@ -12,7 +12,8 @@ You need **either** a JDK 27 and Maven (IntelliJ IDEA comes with Maven)
 Exactly 27: two topics are preview features, and preview features only run
 on the JDK they were compiled for. The project enables them in `pom.xml`
 (`--enable-preview`). In IntelliJ, set the project SDK to 27 and the language
-level to "27 (Preview)".
+level to "27 (Preview)". This needs IntelliJ IDEA 2026.2 or newer: older
+versions do not offer language level 27, whichever JDK you select.
 
 ```bash
 git clone <repository-url> java-workshop
